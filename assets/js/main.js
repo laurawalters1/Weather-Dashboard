@@ -1,3 +1,27 @@
+// Fetch function
+function fetchFunction(location) {
+  fetch(
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
+      location +
+      "&appid=d35548829c80ec12d10edefc67f06c96"
+    // d35548829c80ec12d10edefc67f06c96
+  ).then(function (response) {
+    if (!response.ok) {
+      // Checking that response is ok, and halting function if not
+      console.log("ERROR");
+      return;
+    }
+    response.json().then(function (data) {
+      // Checking that user input has a value, if so then it will be saved to local array
+      if (userInput.value) {
+        saveToLocal(userInput.value);
+      }
+      console.log(data);
+      formatFunction(data);
+    });
+  });
+}
+
 //  Input form
 
 // Declare variables
@@ -5,15 +29,20 @@ var inputForm = document.getElementById("inputForm");
 var userInput = document.getElementById("userInput");
 var formSubmitBtn = document.getElementById("formSubmit");
 var searchHistoryList = document.getElementById("searchHistoryList");
+var currentDayCard = document.getElementById("todaysWeather");
+
 inputForm.addEventListener("submit", function (e) {
   e.preventDefault();
+  currentDayCard.innerHTML = "";
   // Check for null value
   if (userInput.value === "") {
     alert("please enter a location");
   } else {
     // Save value to local storage (function defined below)
     console.log(userInput.value);
-    saveToLocal(userInput.value);
+    fetchFunction(userInput.value);
+
+    // saveToLocal(userInput.value);
     // Add event listener which will call the fetch function (call not define)
     // fetchFunction(userInput.value);
   }
@@ -42,11 +71,16 @@ function saveToLocal(location) {
 function searchHistoryButtons(array) {
   for (var i = 0; i < array.length; i++) {
     var locationLink = document.createElement("a");
-    locationLink.href = "";
+    // locationLink.href =
+    //   "http://api.weatherapi.com/v1/forecast.json?key=21bded92b0954e64aa1204441222301&q=" +
+    //   array[i] +
+    //   "&days=5&aqi=no&alerts=no";
     var locationButton = document.createElement("button");
+    locationButton.dataset.location = array[i];
     locationButton.textContent = array[i];
     locationButton.appendChild(locationLink);
     locationButton.classList.add("locationButton");
+
     var locationListItem = document.createElement("li");
     locationListItem.appendChild(locationButton);
     searchHistoryList.appendChild(locationListItem);
@@ -61,12 +95,26 @@ searchHistoryButtons(JSON.parse(localStorage.getItem("searchHistory")));
 var locationButtonArray = document.querySelectorAll(".locationButton");
 
 for (var i = 0; i < locationButtonArray.length; i++) {
-  locationButtonArray[i].addEventListener("click", function () {
-    console.log(locationButtonArray[i]);
+  locationButtonArray[i].addEventListener("click", function (e) {
+    console.log(e.target);
+    currentDayCard.innerHTML = "";
+    fetchFunction(e.target.textContent);
   });
 }
-// Fetch function
 
 // Takes values from either input or buttons
 
 // Format the data into dashboard structure
+function formatFunction(data) {
+  //   console.log(data.forecast.forecastday[0].day.avgtemp_c);
+  //   var locationHeader = document.createElement("h2");
+  //   locationHeader.textContent = data.location.name;
+  //   currentDayCard.appendChild(locationHeader);
+  //   var todaysDate = document.createElement("h3");
+  //   todaysDate.textContent = "last updated: " + data.current.last_updated;
+  //   currentDayCard.appendChild(todaysDate);
+  //   var todaysIcon = document.createElement("img");
+  //   todaysIcon.setAttribute("src", "https://" + data.current.condition.icon);
+  //   currentDayCard.appendChild(todaysIcon);
+  console.log("SUCCESS!");
+}
