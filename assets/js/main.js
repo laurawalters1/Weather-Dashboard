@@ -1,24 +1,52 @@
 // Fetch function
 function fetchFunction(location) {
   fetch(
-    "https://api.openweathermap.org/data/2.5/weather?q=" +
+    "http://api.openweathermap.org/geo/1.0/direct?q=" +
       location +
-      "&appid=d35548829c80ec12d10edefc67f06c96"
-    // d35548829c80ec12d10edefc67f06c96
+      "&limit=5&appid=d35548829c80ec12d10edefc67f06c96"
   ).then(function (response) {
-    if (!response.ok) {
-      // Checking that response is ok, and halting function if not
-      console.log("ERROR");
-      return;
-    }
     response.json().then(function (data) {
-      // Checking that user input has a value, if so then it will be saved to local array
-      if (userInput.value) {
-        saveToLocal(userInput.value);
-      }
       console.log(data);
-      formatFunction(data);
+      "https://api.openweathermap.org/data/2.5/weather?q=" +
+        location +
+        "&appid=d35548829c80ec12d10edefc67f06c96";
+      // "https://api.openweathermap.org/data/2.5/forecast/daily?q=" +
+      //   location +
+      //   "&cnt=7&appid=d35548829c80ec12d10edefc67f06c96"
+      // d35548829c80ec12d10edefc67f06c96
+      fetch(
+        "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+          data[0].lat +
+          "&lon=" +
+          data[0].lon +
+          "&exclude=hourly&appid=d35548829c80ec12d10edefc67f06c96"
+      ).then(function (response) {
+        response.json().then(function (data) {
+          if (userInput.value) {
+            saveToLocal(userInput.value);
+          }
+
+          console.log(data);
+          formatFunction(data, location);
+          formatFutureFunction(data, location);
+        });
+      });
     });
+    //   }).then(function (response) {
+    //     if (!response.ok) {
+    //       // Checking that response is ok, and halting function if not
+    //       console.log("ERROR");
+    //       return;
+    //     }
+    //     response.json().then(function (data) {
+    //       // Checking that user input has a value, if so then it will be saved to local array
+    //       if (userInput.value) {
+    //         saveToLocal(userInput.value);
+    //       }
+    //       console.log(data);
+    //       formatFunction(data);
+    //     });
+    //   });
   });
 }
 
@@ -105,16 +133,80 @@ for (var i = 0; i < locationButtonArray.length; i++) {
 // Takes values from either input or buttons
 
 // Format the data into dashboard structure
-function formatFunction(data) {
+function formatFunction(data, location) {
   //   console.log(data.forecast.forecastday[0].day.avgtemp_c);
-  //   var locationHeader = document.createElement("h2");
-  //   locationHeader.textContent = data.location.name;
-  //   currentDayCard.appendChild(locationHeader);
-  //   var todaysDate = document.createElement("h3");
-  //   todaysDate.textContent = "last updated: " + data.current.last_updated;
-  //   currentDayCard.appendChild(todaysDate);
-  //   var todaysIcon = document.createElement("img");
-  //   todaysIcon.setAttribute("src", "https://" + data.current.condition.icon);
-  //   currentDayCard.appendChild(todaysIcon);
+  console.log(data);
+  var locationHeader = document.createElement("h2");
+  locationHeader.textContent = location;
+  currentDayCard.appendChild(locationHeader);
+  var dateHeader = document.createElement("h3");
+  dateHeader.textContent = "Todays date";
+  currentDayCard.appendChild(dateHeader);
+
+  var todaysIcon = document.createElement("img");
+  todaysIcon.setAttribute(
+    "src",
+    "http://openweathermap.org/img/wn/" +
+      data.current.weather[0].icon +
+      "@2x.png"
+  );
+
+  currentDayCard.appendChild(todaysIcon);
+  var celsius = data.current.temp - 273.15;
+  var temp = document.createElement("h4");
+  temp.textContent = Math.floor(celsius);
+  currentDayCard.appendChild(temp);
+  var humidity = document.createElement("h4");
+  humidity.textContent = "Humidity: " + data.current.humidity;
+  currentDayCard.appendChild(humidity);
+  var windSpeed = document.createElement("h4");
+  windSpeed.textContent = "Wind speed: " + data.current.wind_speed;
+  currentDayCard.appendChild(windSpeed);
+  var uvIndex = document.createElement("h4");
+  uvIndex.textContent = "UV Index: " + data.current.uvi;
+  uvIndex.classList.add("uv");
+  currentDayCard.appendChild(uvIndex);
+  console.log(data);
   console.log("SUCCESS!");
+}
+
+var weatherCardsList = document.getElementById("weatherCards");
+
+function formatFutureFunction(data, location) {
+  var dailyArray = data.daily;
+
+  for (i = 0; i < 5; i++) {
+    var weatherCardItem = document.createElement("li");
+    var locationName = document.createElement("h2");
+    var weatherCard = document.createElement("div");
+    locationName.textContent = location;
+    weatherCard.appendChild(locationName);
+    weatherCardItem.appendChild(weatherCard);
+    weatherCardsList.appendChild(weatherCardItem);
+    var futureDate = document.createElement("h3");
+    futureDate.textContent = "date " + [i];
+    weatherCard.appendChild(futureDate);
+
+    var futureIcon = document.createElement("img");
+    futureIcon.setAttribute(
+      "src",
+      "http://openweathermap.org/img/wn/" +
+        data.daily[i].weather[0].icon +
+        "@2x.png"
+    );
+    weatherCard.appendChild(futureIcon);
+
+    var futureCelsius = data.daily[i].temp.day - 273.15;
+    var temp = document.createElement("h4");
+    temp.textContent = Math.floor(futureCelsius);
+    weatherCard.appendChild(temp);
+
+    var futureWindSpeed = document.createElement("h4");
+    futureWindSpeed.textContent = "Wind speed: " + data.daily[i].wind_speed;
+    weatherCard.appendChild(futureWindSpeed);
+
+    var futureHumidity = document.createElement("h4");
+    futureHumidity.textContent = "Humidity: " + data.daily[0].humidity;
+    weatherCard.appendChild(futureHumidity);
+  }
 }
