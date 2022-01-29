@@ -169,7 +169,9 @@ function formatFutureFunction(data, location) {
     weatherCardItem.classList.add("weatherCardItem");
     var locationName = document.createElement("h2");
     var weatherCard = document.createElement("div");
-    weatherCard.classList.add("weatherCard");
+    weatherCardItem.classList.add("weatherCard");
+    weatherCardItem.classList.add("col-lg-5");
+    weatherCardItem.classList.add("col-10");
     locationName.textContent = location;
     weatherCard.appendChild(locationName);
     weatherCardItem.appendChild(weatherCard);

@@ -1,10 +1,9 @@
-html { 
-    min-height: 100%;
+html {
+  min-height: 100%;
 }
 
 body {
-
-    background-image: linear-gradient(to bottom right, dodgerblue, lightblue);
+  background-image: linear-gradient(to bottom right, dodgerblue, lightblue);
 
   font-family: poppins;
   display: flex;
@@ -13,11 +12,10 @@ body {
   align-items: center;
   padding: 30px;
   /* height: 100vh; */
-
 }
 
 .form {
-  margin-top: 100px;
+  margin-top: 10px;
 }
 
 .submitBtn {
@@ -55,9 +53,8 @@ body {
 }
 
 .weatherCardItem {
-  border: solid 1px black;
   border-radius: 3px;
-  margin: 5px 0px 5px 0px;
+  margin: 10px 10px 10px 10px;
 }
 
 .weatherCard {
@@ -80,9 +77,10 @@ img {
 .weatherCards {
   list-style-type: none;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+  align-items: space-between;
+  justify-content: center;
 }
 
 .searchHistoryList {
@@ -104,10 +102,12 @@ img {
 
 .weatherSection {
   width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .todaysWeather {
-  border: black solid 1px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
