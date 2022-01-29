@@ -2,7 +2,7 @@
 var weatherCardsList = document.getElementById("weatherCards");
 function fetchFunction(location) {
   fetch(
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
       location +
       "&limit=5&appid=d35548829c80ec12d10edefc67f06c96"
   ).then(function (response) {
@@ -30,7 +30,6 @@ function fetchFunction(location) {
           console.log(data);
           formatFunction(data, location);
           formatFutureFunction(data, location);
-          
         });
       });
     });
@@ -48,11 +47,11 @@ var currentDayCard = document.getElementById("todaysWeather");
 
 inputForm.addEventListener("submit", function (e) {
   e.preventDefault();
-  if(currentDayCard){
-  currentDayCard.innerHTML = "";
+  if (currentDayCard) {
+    currentDayCard.innerHTML = "";
   }
-  if(weatherCardsList){
-  weatherCardsList.innerHTML = "";
+  if (weatherCardsList) {
+    weatherCardsList.innerHTML = "";
   }
   // Check for null value
   if (userInput.value === "") {
@@ -61,7 +60,6 @@ inputForm.addEventListener("submit", function (e) {
     // Save value to local storage (function defined below)
     console.log(userInput.value);
     fetchFunction(userInput.value);
-    
   }
 });
 
@@ -86,9 +84,9 @@ searchHistoryButtons(JSON.parse(localStorage.getItem("searchHistory")));
 
 // Use local storage array to create buttons for each searched location
 function searchHistoryButtons(array) {
-    if(!array){
-        return
-    }
+  if (!array) {
+    return;
+  }
   for (var i = 0; i < array.length; i++) {
     var locationLink = document.createElement("a");
     // locationLink.href =
@@ -107,7 +105,6 @@ function searchHistoryButtons(array) {
     locationButton.addEventListener("click", function () {});
   }
 }
-
 
 // Add a value to these buttons (data-attribute) which will be the location name
 
@@ -163,7 +160,6 @@ function formatFunction(data, location) {
   console.log(data);
   console.log("SUCCESS!");
 }
-
 
 function formatFutureFunction(data, location) {
   var dailyArray = data.daily;
