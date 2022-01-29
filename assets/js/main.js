@@ -129,6 +129,8 @@ function formatFunction(data, location) {
   var locationHeader = document.createElement("h2");
   locationHeader.textContent = location;
   currentDayCard.appendChild(locationHeader);
+  currentDayCard.classList.add("col-12");
+  currentDayCard.classList.add("col-lg-8");
   var dateHeader = document.createElement("h3");
   dateHeader.textContent = dateConverter(data.current.dt);
   currentDayCard.appendChild(dateHeader);
@@ -144,13 +146,13 @@ function formatFunction(data, location) {
   currentDayCard.appendChild(todaysIcon);
   var celsius = data.current.temp - 273.15;
   var temp = document.createElement("h4");
-  temp.textContent = Math.floor(celsius);
+  temp.textContent = Math.floor(celsius) + "ºC";
   currentDayCard.appendChild(temp);
   var humidity = document.createElement("h4");
-  humidity.textContent = "Humidity: " + data.current.humidity;
+  humidity.textContent = "Humidity: " + data.current.humidity + "%";
   currentDayCard.appendChild(humidity);
   var windSpeed = document.createElement("h4");
-  windSpeed.textContent = "Wind speed: " + data.current.wind_speed;
+  windSpeed.textContent = "Wind speed: " + data.current.wind_speed + " mph";
   currentDayCard.appendChild(windSpeed);
   var uvIndex = document.createElement("h4");
   uvIndex.textContent = "UV Index: " + data.current.uvi;
@@ -191,15 +193,16 @@ function formatFutureFunction(data, location) {
 
     var futureCelsius = data.daily[i].temp.day - 273.15;
     var temp = document.createElement("h4");
-    temp.textContent = Math.floor(futureCelsius);
+    temp.textContent = Math.floor(futureCelsius) + "ºC";
     weatherCard.appendChild(temp);
 
     var futureWindSpeed = document.createElement("h4");
-    futureWindSpeed.textContent = "Wind speed: " + data.daily[i].wind_speed;
+    futureWindSpeed.textContent =
+      "Wind speed: " + data.daily[i].wind_speed + " mph";
     weatherCard.appendChild(futureWindSpeed);
 
     var futureHumidity = document.createElement("h4");
-    futureHumidity.textContent = "Humidity: " + data.daily[0].humidity;
+    futureHumidity.textContent = "Humidity: " + data.daily[0].humidity + "%";
     weatherCard.appendChild(futureHumidity);
   }
 }
