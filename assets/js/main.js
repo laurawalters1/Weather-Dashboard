@@ -136,7 +136,7 @@ function formatFunction(data, location) {
   var todaysIcon = document.createElement("img");
   todaysIcon.setAttribute(
     "src",
-    "http://openweathermap.org/img/wn/" +
+    "https://openweathermap.org/img/wn/" +
       data.current.weather[0].icon +
       "@2x.png"
   );
@@ -181,7 +181,7 @@ function formatFutureFunction(data, location) {
     var futureIcon = document.createElement("img");
     futureIcon.setAttribute(
       "src",
-      "http://openweathermap.org/img/wn/" +
+      "https://openweathermap.org/img/wn/" +
         data.daily[i].weather[0].icon +
         "@2x.png"
     );
