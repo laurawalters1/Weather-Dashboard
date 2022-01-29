@@ -1,4 +1,5 @@
 // Fetch function
+var weatherCardsList = document.getElementById("weatherCards");
 function fetchFunction(location) {
   fetch(
     "http://api.openweathermap.org/geo/1.0/direct?q=" +
@@ -29,24 +30,10 @@ function fetchFunction(location) {
           console.log(data);
           formatFunction(data, location);
           formatFutureFunction(data, location);
+          
         });
       });
     });
-    //   }).then(function (response) {
-    //     if (!response.ok) {
-    //       // Checking that response is ok, and halting function if not
-    //       console.log("ERROR");
-    //       return;
-    //     }
-    //     response.json().then(function (data) {
-    //       // Checking that user input has a value, if so then it will be saved to local array
-    //       if (userInput.value) {
-    //         saveToLocal(userInput.value);
-    //       }
-    //       console.log(data);
-    //       formatFunction(data);
-    //     });
-    //   });
   });
 }
 
@@ -61,7 +48,12 @@ var currentDayCard = document.getElementById("todaysWeather");
 
 inputForm.addEventListener("submit", function (e) {
   e.preventDefault();
+  if(currentDayCard){
   currentDayCard.innerHTML = "";
+  }
+  if(weatherCardsList){
+  weatherCardsList.innerHTML = "";
+  }
   // Check for null value
   if (userInput.value === "") {
     alert("please enter a location");
@@ -69,10 +61,7 @@ inputForm.addEventListener("submit", function (e) {
     // Save value to local storage (function defined below)
     console.log(userInput.value);
     fetchFunction(userInput.value);
-
-    // saveToLocal(userInput.value);
-    // Add event listener which will call the fetch function (call not define)
-    // fetchFunction(userInput.value);
+    
   }
 });
 
@@ -92,11 +81,14 @@ function saveToLocal(location) {
   localStorage.setItem("searchHistory", JSON.stringify(storageArray));
   //   searchHistoryButtons(storageArray);
 }
-
+searchHistoryButtons(JSON.parse(localStorage.getItem("searchHistory")));
 // Buttons
 
 // Use local storage array to create buttons for each searched location
 function searchHistoryButtons(array) {
+    if(!array){
+        return
+    }
   for (var i = 0; i < array.length; i++) {
     var locationLink = document.createElement("a");
     // locationLink.href =
@@ -116,7 +108,7 @@ function searchHistoryButtons(array) {
   }
 }
 
-searchHistoryButtons(JSON.parse(localStorage.getItem("searchHistory")));
+
 // Add a value to these buttons (data-attribute) which will be the location name
 
 // Add event listener to the buttons which will call the fetch function (call not define)
@@ -126,6 +118,7 @@ for (var i = 0; i < locationButtonArray.length; i++) {
   locationButtonArray[i].addEventListener("click", function (e) {
     console.log(e.target);
     currentDayCard.innerHTML = "";
+    weatherCardsList.innerHTML = "";
     fetchFunction(e.target.textContent);
   });
 }
@@ -140,9 +133,9 @@ function formatFunction(data, location) {
   locationHeader.textContent = location;
   currentDayCard.appendChild(locationHeader);
   var dateHeader = document.createElement("h3");
-  dateHeader.textContent = "Todays date";
+  dateHeader.textContent = dateConverter(data.current.dt);
   currentDayCard.appendChild(dateHeader);
-
+  currentDayCard.classList.add("todaysWeather");
   var todaysIcon = document.createElement("img");
   todaysIcon.setAttribute(
     "src",
@@ -165,26 +158,28 @@ function formatFunction(data, location) {
   var uvIndex = document.createElement("h4");
   uvIndex.textContent = "UV Index: " + data.current.uvi;
   uvIndex.classList.add("uv");
+  uvChecker(data, uvIndex);
   currentDayCard.appendChild(uvIndex);
   console.log(data);
   console.log("SUCCESS!");
 }
 
-var weatherCardsList = document.getElementById("weatherCards");
 
 function formatFutureFunction(data, location) {
   var dailyArray = data.daily;
 
-  for (i = 0; i < 5; i++) {
+  for (i = 1; i < 6; i++) {
     var weatherCardItem = document.createElement("li");
+    weatherCardItem.classList.add("weatherCardItem");
     var locationName = document.createElement("h2");
     var weatherCard = document.createElement("div");
+    weatherCard.classList.add("weatherCard");
     locationName.textContent = location;
     weatherCard.appendChild(locationName);
     weatherCardItem.appendChild(weatherCard);
     weatherCardsList.appendChild(weatherCardItem);
     var futureDate = document.createElement("h3");
-    futureDate.textContent = "date " + [i];
+    futureDate.textContent = dateConverter(data.daily[i].dt);
     weatherCard.appendChild(futureDate);
 
     var futureIcon = document.createElement("img");
@@ -209,4 +204,28 @@ function formatFutureFunction(data, location) {
     futureHumidity.textContent = "Humidity: " + data.daily[0].humidity;
     weatherCard.appendChild(futureHumidity);
   }
+}
+
+function uvChecker(data, uvItem) {
+  if (data.current.uvi <= 3) {
+    uvItem.classList.add("uv-mild");
+  } else if (data.curent.uvi <= 7) {
+    uvItem.classList.add("uv-med");
+  } else if (data.current.uvi >= 8) {
+    uvItem.classList.add("uv-xtr");
+  }
+}
+
+function dateConverter(timestamp) {
+  var miliseconds = timestamp * 1000;
+  var humanDate = new Date(miliseconds).toLocaleString("en-US", {
+    weekday: "long",
+
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+  });
+
+  return humanDate;
 }

@@ -1,3 +1,153 @@
+html { 
+    min-height: 100%;
+}
+
 body {
-  background-color: dodgerblue;
+
+    background-image: linear-gradient(to bottom right, dodgerblue, lightblue);
+
+  font-family: poppins;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  /* height: 100vh; */
+
+}
+
+.form {
+  margin-top: 100px;
+}
+
+.submitBtn {
+  border: none;
+  border-radius: 3px;
+  background-color: rgb(59, 58, 58);
+  opacity: 60%;
+  color: white;
+  padding: 5px 5px 5px 5px;
+}
+
+.submitBtn:hover {
+  transform: scale(1.02);
+  background-color: rgb(32, 32, 32);
+}
+
+.uv {
+  font-family: poppins;
+  background-color: white;
+  width: fit-content;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+.uv-mild {
+  background-color: rgb(114, 250, 114);
+}
+
+.uv-med {
+  background-color: orange;
+}
+
+.uv-xtr {
+  background-color: red;
+}
+
+.weatherCardItem {
+  border: solid 1px black;
+  border-radius: 3px;
+  margin: 5px 0px 5px 0px;
+}
+
+.weatherCard {
+  padding: 50px;
+  background-color: white;
+  border-radius: 3px;
+}
+
+img {
+  height: 200px;
+  width: auto;
+  padding-bottom: 10px;
+}
+
+.weatherCard:hover {
+  transform: scale(1.02);
+  transition: ease 250ms;
+}
+
+.weatherCards {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.searchHistoryList {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 80px;
+  padding-left: none;
+  list-style: none;
+}
+
+.aside {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.weatherSection {
+  width: 90%;
+}
+
+.todaysWeather {
+  border: black solid 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+  margin: 50px 0px 50px 0px;
+  border-radius: 5px;
+  background-color: rgb(255, 254, 254);
+}
+
+#userInput {
+  width: 300px;
+  border: none;
+  border-radius: 3px;
+  opacity: 80%;
+  padding: 5px;
+}
+
+.locationButton {
+  width: 300px;
+  border: white 1px solid;
+  border-radius: 3px;
+  background-color: transparent;
+  color: white;
+  font-family: poppins;
+  padding: 10px;
+  margin: 10px 10px 10px 10px;
+}
+
+.locationButton:hover {
+  transform: scale(1.02);
+  background-color: rgb(255, 255, 255);
+  color: rgb(101, 186, 255);
+  transition: ease 250ms;
+}
+
+@media screen and(max-width: 1200px) {
+  .weatherCards {
+    /* list-style-type: none;
+    display: flex;
+    flex-direction: column; */
+  }
 }
